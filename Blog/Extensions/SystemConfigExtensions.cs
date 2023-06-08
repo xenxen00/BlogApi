@@ -41,6 +41,10 @@ using Application.UseCases.Commands.Users;
 using Implementation.UseCases.Commands.EF.Users;
 using Application.UseCases.Commands.PostReactions;
 using Implementation.UseCases.Commands.EF.PostReactions;
+using Application.UseCases.Queries.Tags;
+using Implementation.UseCases.Queries.EF.Tags;
+using Application.UseCases.Commands.Tag;
+using Implementation.UseCases.Commands.EF.Tags;
 
 namespace Api.Extensions
 {
@@ -114,6 +118,11 @@ namespace Api.Extensions
             services.AddTransient<ISavePostCommand, EFSavePostCommand>();
             services.AddTransient<IDeletePostCommand, EFDeletePostCommand>();
             services.AddTransient<IRemovePostFromSavedCommand, EFRemovePostFromSaved>();
+            //Tags
+            services.AddTransient<IGetTagsQuery, EFGetTagsQuery>();
+            services.AddTransient<ICreateTagCommand, EFCreateTagCommand>();
+            services.AddTransient<IDeleteTagCommand, EFDeleteTagCommand>();
+            services.AddTransient<IUpdateTagCommand, EFUpdateTagCommand>();
             //Comments
             services.AddTransient<IDeleteCommentCommand, EFDeleteCommentCommand>();
             services.AddTransient<ICreateCommentCommand, EFCreateCommentCommand>();
