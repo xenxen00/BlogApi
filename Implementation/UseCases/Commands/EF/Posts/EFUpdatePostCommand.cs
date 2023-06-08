@@ -1,4 +1,5 @@
-﻿using Application.UseCases.Commands.Posts;
+﻿using Application.Exeptions;
+using Application.UseCases.Commands.Posts;
 using Application.UseCases.DTO;
 using DataAccess;
 using Domain.Entities;
@@ -16,11 +17,13 @@ namespace Implementation.UseCases.Commands.EF.Posts
     {
         private readonly UpdatePostValidator _validator;
         private readonly ImageValdiator _imageValidator;
+        private readonly IApplicationUser _user;
 
-        public EFUpdatePostCommand(BlogContext context, UpdatePostValidator validator, ImageValdiator imageValidator) : base(context)
+        public EFUpdatePostCommand(BlogContext context, UpdatePostValidator validator, ImageValdiator imageValidator, IApplicationUser user) : base(context)
         {
             _validator = validator;
             _imageValidator = imageValidator;
+            _user = user;
         }
 
         public int Id => 6;
@@ -34,6 +37,11 @@ namespace Implementation.UseCases.Commands.EF.Posts
             _validator.ValidateAndThrow(request);
 
             var post = Context.Posts.Find(request.Id);
+
+            if(post.Author.Id != _user.Id)
+            {
+                throw new ForbiddenUseCase();
+            }
 
             foreach (var image in request.Images)
             {
