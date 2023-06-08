@@ -1,4 +1,5 @@
 ﻿using Application.UseCases.DTO;
+using Application.UseCases.DTO.Searches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Queries
 {
-    public interface IGetReactionsQuery: IEmptyQuery<IEnumerable<CommonDto>>
+    public interface IGetReactionsQuery: IQuery<SearchDto, PagedResponse<CommonDto>>
     {
     }
 }

@@ -47,19 +47,6 @@ namespace Implementation
             }
         }
 
-        public TResponse HandleEmptyQuery<TResponse> (IEmptyQuery<TResponse> query)
-        {
-            try
-            {
-                HandleAuthorization(query);
-                return query.Execute();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
         public void HandleAuthorization(IUseCase usecase)
         {
             var isUserAuthorized = _applicationUser.PermissionsIds.Contains(usecase.Id);

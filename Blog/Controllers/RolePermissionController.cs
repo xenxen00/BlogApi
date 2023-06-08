@@ -28,7 +28,7 @@ namespace Api.Controllers
         // POST api/<RolePermissionController>
         [HttpPost]
         [Authorize]
-        public IActionResult Post([FromBody] RolePermission dto)
+        public IActionResult Post([FromBody] RolePermissionDto dto)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Api.Controllers
         // DELETE api/<RolePermissionController>/5
         [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult Delete([FromBody] RolePermission dto)
+        public IActionResult Delete([FromBody] RolePermissionDto dto)
         {
             try
             {

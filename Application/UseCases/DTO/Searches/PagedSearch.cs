@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.DTO.Searches
 {
-    public class SearchDto: PagedSearch
+    public class PagedSearch
     {
-        public string keyword { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
     }
 }

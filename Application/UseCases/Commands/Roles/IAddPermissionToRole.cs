@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Commands.Roles
 {
-    public interface IAddPermissionToRole: ICommand<RolePermission>
+    public interface IAddPermissionToRole: ICommand<RolePermissionDto>
     {
     }
 }

@@ -1,10 +1,14 @@
 ﻿using Application.UseCases.DTO;
+using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries.SavedPosts;
 using DataAccess;
+using Domain.Entities;
+using Implementation.Extentions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,19 +25,26 @@ namespace Implementation.UseCases.Queries.EF
 
         public int Id => 33;
 
-        public string Name => "";
+        public string Name => "Get saved posts";
 
-        public string Description => "";
+        public string Description => "Get saved posts using EF";
 
-        public IEnumerable<PostListDto> Execute()
+        public PagedResponse<PostListDto> Execute(SearchDto request)
         {
-            var postsQuery = Context.Posts.Include(x => x.PostReactions).ThenInclude(x => x.Reaction)
-                                          .Include(x => x.Comments).ThenInclude(x => x.Author)
-                                          .Include(x => x.Author)
-                                          .Where(x => x.ReadingLists.Any(y => y.PostId == x.Id && y.UserId == _user.Id))
-                                          .AsQueryable();
+            IQueryable<Post> postsQuery = Context.Posts.Include(x => x.PostReactions).ThenInclude(x => x.Reaction)
+                                         .Include(x => x.Comments).ThenInclude(x => x.Author)
+                                         .Include(x => x.Author)
+                                         .Where(x => x.ReadingLists.Any(y => y.PostId == x.Id && y.UserId == _user.Id));
 
-            var data = postsQuery.Select(x => new PostListDto
+            if (!string.IsNullOrEmpty(request.keyword))
+            {
+                postsQuery = postsQuery.Where(x => x.Title.Contains(request.keyword)
+                                                || x.Author.FirstName.Contains(request.keyword)
+                                                || x.Author.LastName.Contains(request.keyword)
+                                                || x.PostTags.Any(x => x.Tag.Name.Contains(request.keyword)));
+            }
+
+           var data = postsQuery.GetPagedResponse<Post, PostListDto>(request, x => new PostListDto
             {
                 Title = x.Title,
                 Content = x.Content,
@@ -43,10 +54,9 @@ namespace Implementation.UseCases.Queries.EF
                 LastEditedAt = x.UpdatedAt,
                 NumberOfComments = x.Comments.Count(),
                 NumberOfPostReactions = x.PostReactions.Count()
-            }).ToList();
+            });
 
             return data;
-      
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Implementation.UseCases.Commands.EF.Roles
 
         public string Description => "Add permission to role using EF";
 
-        public void Execute(RolePermission request)
+        public void Execute(RolePermissionDto request)
         {
             var permission = Context.Permissions.Find(request.PermissionId);
 

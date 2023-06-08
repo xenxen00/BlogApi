@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Queries.Roles
 {
-    public interface IGetRolesQuery: IEmptyQuery<IEnumerable<RoleDto>>
+    public interface IGetRolesQuery: IQuery<SearchDto, PagedResponse<RoleDto>>
     {
     }
 }

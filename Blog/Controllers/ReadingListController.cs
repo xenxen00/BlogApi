@@ -35,11 +35,11 @@ namespace Api.Controllers
         // GET: api/<ReadingListController>
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] SearchDto dto)
         {
             try
             {
-                var res = _handler.HandleEmptyQuery(_getSavedPostsQuery);
+                var res = _handler.HandleQuery(_getSavedPostsQuery, dto);
                 return Ok(res);
             }
             catch (System.Exception ex)

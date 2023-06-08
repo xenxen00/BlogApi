@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.DTO
 {
-    public class RolePermission
+    public class RolePermissionDto
     {
         public int RoleId { get; set; }
         public int PermissionId { get; set; }

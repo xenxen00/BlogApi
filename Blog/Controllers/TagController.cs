@@ -1,6 +1,7 @@
 ﻿using Application.Exeptions;
 using Application.UseCases.Commands.Tag;
 using Application.UseCases.DTO;
+using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries.Tags;
 using FluentValidation;
 using Implementation;
@@ -33,11 +34,11 @@ namespace Api.Controllers
         // GET: api/<TagController>
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] SearchDto dto)
         {
             try
             {
-                var data = _handler.HandleEmptyQuery(_getTagsQuery);
+                var data = _handler.HandleQuery(_getTagsQuery, dto);
                 return Ok(data);
             }
             catch (Exception ex)

@@ -35,11 +35,11 @@ namespace Api.Controllers
         // GET: api/<RoleController>
         [HttpGet]
         [Authorize]
-        public IActionResult Get(SearchDto dto)
+        public IActionResult Get([FromQuery] SearchDto dto)
         {
             try
             {
-                var data = _handler.HandleEmptyQuery(_getRolesQuery);
+                var data = _handler.HandleQuery(_getRolesQuery, dto);
                 return Ok(data);
             }
             catch (Exception ex)

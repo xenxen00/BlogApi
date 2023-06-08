@@ -2,7 +2,7 @@
 using Application.UseCases.Commands;
 using Application.UseCases.Commands.Permissions;
 using Application.UseCases.DTO;
-using Application.UseCases.Queries.Common;
+using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries.Permissions;
 using FluentValidation;
 using Implementation;
@@ -37,11 +37,11 @@ namespace Api.Controllers
         // GET: api/<PermissionController>
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] SearchDto dto)
         {
             try
             {
-                var response = _handler.HandleEmptyQuery(_getQuery);
+                var response = _handler.HandleQuery(_getQuery, dto);
                 return StatusCode(StatusCodes.Status201Created);
             }
             catch (Exception ex)

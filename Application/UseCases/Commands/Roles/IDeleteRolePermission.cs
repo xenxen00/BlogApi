@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Commands.Roles
 {
-    public interface IDeleteRolePermission:ICommand<RolePermission>
+    public interface IDeleteRolePermission:ICommand<RolePermissionDto>
     {
 
     }

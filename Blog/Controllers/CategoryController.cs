@@ -10,6 +10,7 @@ using Implementation.UseCases.Queries.EF.Posts;
 using Application.UseCases.DTO;
 using FluentValidation;
 using Application.Exeptions;
+using Application.UseCases.DTO.Searches;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,11 +38,11 @@ namespace Api.Controllers
         // GET: api/<CategoryController>
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] SearchDto dto)
         {
             try
             {
-                var res = _handler.HandleEmptyQuery(_getCategoriesQuery);
+                var res = _handler.HandleQuery(_getCategoriesQuery, dto);
                 return Ok(res);
             }
             catch (System.Exception ex)

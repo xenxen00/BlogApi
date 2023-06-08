@@ -1,7 +1,9 @@
 ﻿using Application.UseCases.DTO;
-using Application.UseCases.Queries.Common;
+using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries.Tags;
 using DataAccess;
+using Domain.Entities;
+using Implementation.Extentions;
 
 namespace Implementation.UseCases.Queries.EF.Tags
 {
@@ -17,15 +19,21 @@ namespace Implementation.UseCases.Queries.EF.Tags
 
         public string Description => "";
 
-        public IEnumerable<CommonDto> Execute()
+        public PagedResponse<CommonDto> Execute(SearchDto request)
         {
-            var tags = Context.Tags.Where(x => x.Active == true);
+            IQueryable<Tag> tags = Context.Tags.Where(x => x.Active == true);
 
-            var data = tags.Select(x => new CommonDto
+
+            if (!String.IsNullOrEmpty(request.keyword))
+            {
+                tags = tags.Where(x => x.Name.Contains(request.keyword));
+            }
+
+            var data = tags.GetPagedResponse<Tag, CommonDto>(request, x => new CommonDto
             {
                 Id = x.Id,
-                Name = x.Name,
-            }).ToList();
+                Name = x.Name
+            });
 
             return data;
         }

@@ -1,6 +1,7 @@
 ﻿using Application.Exeptions;
 using Application.UseCases.Commands.Reaction;
 using Application.UseCases.DTO;
+using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries;
 using FluentValidation;
 using Implementation;
@@ -33,11 +34,11 @@ namespace Api.Controllers
         // GET: api/<ReactionController>
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] SearchDto dto)
         {
             try
             {
-                var data = _handler.HandleEmptyQuery(_getReactionsQuery);
+                var data = _handler.HandleQuery(_getReactionsQuery, dto);
                 return Ok(data);
             }
             catch (Exception ex)

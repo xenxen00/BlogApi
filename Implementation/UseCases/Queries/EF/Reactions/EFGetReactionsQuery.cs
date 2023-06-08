@@ -1,7 +1,9 @@
 ﻿using Application.UseCases.DTO;
+using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries;
-using Application.UseCases.Queries.Common;
 using DataAccess;
+using Domain.Entities;
+using Implementation.Extentions;
 
 namespace Implementation.UseCases.Queries.EF.Reactions
 {
@@ -17,15 +19,21 @@ namespace Implementation.UseCases.Queries.EF.Reactions
 
         public string Description => "";
 
-        public IEnumerable<CommonDto> Execute()
+        public PagedResponse<CommonDto> Execute(SearchDto request)
         {
-            var reactions = Context.Reactions.Where(x => x.Active == true);
+            IQueryable<Domain.Entities.Reaction> reactions = Context.Reactions.Where(x => x.Active == true);
 
-            var data = reactions.Select(x => new CommonDto
+
+            if (!String.IsNullOrEmpty(request.keyword))
+            {
+                reactions = reactions.Where(x => x.Name.Contains(request.keyword));
+            }
+
+            var data = reactions.GetPagedResponse<Domain.Entities.Reaction, CommonDto>(request, x => new CommonDto
             {
                 Id = x.Id,
-                Name = x.Name,
-            }).ToList();
+                Name = x.Name
+            });
 
             return data;
         }

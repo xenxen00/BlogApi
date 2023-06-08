@@ -22,7 +22,7 @@ namespace Implementation.UseCases.Commands.EF.Roles
 
         public string Description => "Delete role permission using EF";
 
-        public void Execute(RolePermission request)
+        public void Execute(RolePermissionDto request)
         {
             var rolePermission = Context.RolesPermissions
                 .Where(x => x.RoleId == request.RoleId && x.PermissionId == request.PermissionId)

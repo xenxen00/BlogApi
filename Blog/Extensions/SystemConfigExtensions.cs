@@ -128,13 +128,6 @@ namespace Api.Extensions
             //PostReactions
             services.AddTransient<IDeletePostReactionCommand, EFDeletePostReaction>();
             services.AddTransient<ICreatePostReaction, EFPostReactionCreateCommand>();
-
-
-
-
-
-
-
             #endregion
 
             #region Validators

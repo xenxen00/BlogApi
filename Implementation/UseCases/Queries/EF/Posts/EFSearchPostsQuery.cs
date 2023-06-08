@@ -2,6 +2,8 @@
 using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries;
 using DataAccess;
+using Domain.Entities;
+using Implementation.Extentions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,14 +25,13 @@ namespace Implementation.UseCases.Queries.EF.Posts
 
         public string Description => "Searching posts by keyword using Entity Framework";
 
-        public IEnumerable<PostListDto> Execute(SearchDto request)
+        public PagedResponse<PostListDto> Execute(SearchDto request)
         {
-            var postsQuery = Context.Posts.Include(x => x.PostReactions).ThenInclude(x => x.Reaction)
+            IQueryable<Post> postsQuery = Context.Posts.Include(x => x.PostReactions).ThenInclude(x => x.Reaction)
                                           .Include(x => x.Comments).ThenInclude(x => x.Author)
                                           .Include(x => x.Author)
                                           .Include(x => x.PostTags).ThenInclude(x => x.Tag)
-                                          .Where(x=> x.Active == true)
-                                          .AsQueryable();
+                                          .Where(x => x.Active == true);
 
             if (!string.IsNullOrEmpty(request.keyword))
             {
@@ -39,8 +40,7 @@ namespace Implementation.UseCases.Queries.EF.Posts
                                                 || x.Author.LastName.Contains(request.keyword)
                                                 || x.PostTags.Any(x => x.Tag.Name.Contains(request.keyword)));
             }
-
-            var data = postsQuery.Select(x => new PostListDto
+            var data = postsQuery.GetPagedResponse<Post, PostListDto>(request, x => new PostListDto
             {
                 Title = x.Title,
                 Content = x.Content,
@@ -50,7 +50,7 @@ namespace Implementation.UseCases.Queries.EF.Posts
                 LastEditedAt = x.UpdatedAt,
                 NumberOfComments = x.Comments.Count(),
                 NumberOfPostReactions = x.PostReactions.Count()
-            }).ToList();
+            });
 
             return data;
         }

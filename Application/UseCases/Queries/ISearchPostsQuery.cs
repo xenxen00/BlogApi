@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Queries
 {
-    public interface ISearchPostsQuery: IQuery<SearchDto, IEnumerable<PostListDto>>
+    public interface ISearchPostsQuery: IQuery<SearchDto, PagedResponse<PostListDto>>
     {
     }
 }

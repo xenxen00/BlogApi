@@ -2,6 +2,8 @@
 using Application.UseCases.DTO.Searches;
 using Application.UseCases.Queries.Roles;
 using DataAccess;
+using Domain.Entities;
+using Implementation.Extentions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Implementation.UseCases.Queries.EF.Roles
@@ -18,11 +20,11 @@ namespace Implementation.UseCases.Queries.EF.Roles
 
         public string Description => "";
 
-        public IEnumerable<RoleDto> Execute()
+        public PagedResponse<RoleDto> Execute(SearchDto request)
         {
-            var roles = Context.Roles.Include(x => x.RolePermissions).ThenInclude(x => x.Permission);
+            IQueryable<Role> roles = Context.Roles.Include(x => x.RolePermissions).ThenInclude(x => x.Permission);
 
-            var data = roles.Select(x => new RoleDto
+            var data = roles.GetPagedResponse<Role, RoleDto>(request, x => new RoleDto
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -33,7 +35,7 @@ namespace Implementation.UseCases.Queries.EF.Roles
                     Description = y.Permission.Description
                 }).ToList()
             });
-
+            
             return data;
         }
     }
