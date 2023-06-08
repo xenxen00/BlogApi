@@ -45,13 +45,11 @@ namespace Api.Middlewares
             catch (System.Exception ex)
             {
                 httpContext.Response.StatusCode = 500;
-                httpContext.Response.ContentType = "application/json";
 
                 var response = new
                 {
-                    message = $"There was an error, please contact support with this error code: ."
+                    message = "There was an error processing your request."
                 };
-
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
         }

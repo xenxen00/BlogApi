@@ -46,7 +46,7 @@ namespace Api.Controllers
         }
 
         // DELETE api/<RolePermissionController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize]
         public IActionResult Delete([FromBody] RolePermissionDto dto)
         {

@@ -26,7 +26,7 @@ namespace Implementation.UseCases.Commands.EF.Comments
 
         public void Execute(int request)
         {
-            var comment = Context.Comments.Where(x => x.Id == request).FirstOrDefault();
+            var comment = Context.Comments.Find(request);
 
             if (comment == null)
             {

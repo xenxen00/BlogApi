@@ -34,6 +34,7 @@ namespace Implementation.UseCases.Commands.EF.Roles
             }
 
             Context.RolesPermissions.Remove(rolePermission);
+            Context.SaveChanges();
         }
     }
 }

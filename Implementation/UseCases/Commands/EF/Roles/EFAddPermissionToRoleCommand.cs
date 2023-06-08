@@ -28,7 +28,7 @@ namespace Implementation.UseCases.Commands.EF.Roles
 
             if(permission == null)
             {
-                throw new NotFoundException("PErmission", request.PermissionId);
+                throw new NotFoundException("Permission", request.PermissionId);
             }
 
             var role = Context.Roles.Find(request.RoleId);
@@ -40,8 +40,8 @@ namespace Implementation.UseCases.Commands.EF.Roles
 
             Context.RolesPermissions.Add(new Domain.Entities.RolePermission
             {
-                Role = role,
-                Permission = permission
+                RoleId = request.RoleId,
+                PermissionId = request.PermissionId
             });
 
             Context.SaveChanges();
