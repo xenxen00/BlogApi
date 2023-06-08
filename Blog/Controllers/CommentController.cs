@@ -58,7 +58,7 @@ namespace Api.Controllers
             {
                 dto.Id = id;
                 _handler.HandleCommand(_updateCommentCommand, dto);
-                return StatusCode(StatusCodes.Status201Created);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (ValidationException ex)
             {
@@ -78,7 +78,7 @@ namespace Api.Controllers
             try
             {
                 _handler.HandleCommand(_deleteCommentCommand, id);
-                return StatusCode(StatusCodes.Status201Created);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (NotFoundException ex)
             {

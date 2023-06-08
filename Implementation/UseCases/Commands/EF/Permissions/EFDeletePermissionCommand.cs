@@ -3,6 +3,7 @@ using Application.UseCases.Commands;
 using Application.UseCases.Commands.Permissions;
 using Application.UseCases.DTO;
 using DataAccess;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,11 @@ namespace Implementation.UseCases.Commands.EF.Permissions
             var permission = Context.Permissions.Where(x => x.Id == request).FirstOrDefault();
 
             if (permission == null)
+            {
+                throw new NotFoundException("Permission", request);
+            }
+
+            if (permission.Active == false)
             {
                 throw new NotFoundException("Permission", request);
             }

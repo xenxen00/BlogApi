@@ -4,6 +4,7 @@ using Application.UseCases.Commands.PostReactions;
 using Application.UseCases.Commands.Posts;
 using Application.UseCases.DTO;
 using DataAccess;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,11 @@ namespace Implementation.UseCases.Commands.EF.Posts
             var post = Context.Posts.Where(x => x.Id == request).FirstOrDefault();
 
             if(post == null)
+            {
+                throw new NotFoundException("Post", request);
+            }
+
+            if (post.Active == false)
             {
                 throw new NotFoundException("Post", request);
             }

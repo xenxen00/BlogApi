@@ -16,8 +16,9 @@ namespace Implementation.UseCases.Commands.EF.Tags
     {
         private readonly UpdateTagValidator _validator;
 
-        public EFUpdateTagCommand(BlogContext context) : base(context)
+        public EFUpdateTagCommand(BlogContext context, UpdateTagValidator validator) : base(context)
         {
+            _validator = validator;
         }
 
         public int Id => 23;

@@ -2,6 +2,7 @@
 using Application.UseCases.Commands;
 using Application.UseCases.Commands.Reaction;
 using DataAccess;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace Implementation.UseCases.Commands.EF.Reactions
             var reaction = Context.Reactions.Where(x => x.Id == request).FirstOrDefault();
 
             if (reaction == null)
+            {
+                throw new NotFoundException("Reaction", request);
+            }
+
+            if (reaction.Active == false)
             {
                 throw new NotFoundException("Reaction", request);
             }

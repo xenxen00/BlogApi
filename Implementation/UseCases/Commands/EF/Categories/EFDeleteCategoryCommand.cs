@@ -2,6 +2,7 @@
 using Application.UseCases.Commands;
 using Application.UseCases.Commands.Categories;
 using DataAccess;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace Implementation.UseCases.Commands.EF.Categories
             var category = Context.Categories.Where(x => x.Id == request).FirstOrDefault();
 
             if (category == null)
+            {
+                throw new NotFoundException("Category", request);
+            }
+
+            if (category.Active == false)
             {
                 throw new NotFoundException("Category", request);
             }

@@ -18,15 +18,20 @@ namespace Implementation.UseCases.Commands.EF.Tags
 
         public int Id => 24;
 
-        public string Name => "";
+        public string Name => "Deactivates tag";
 
-        public string Description => "";
+        public string Description => "Deactivates tag using EF";
 
         public void Execute(int request)
         {
             var tag = Context.Tags.Where(x => x.Id == request).FirstOrDefault();
 
             if (tag == null)
+            {
+                throw new NotFoundException("Tag", request);
+            }
+
+            if (tag.Active == false)
             {
                 throw new NotFoundException("Tag", request);
             }

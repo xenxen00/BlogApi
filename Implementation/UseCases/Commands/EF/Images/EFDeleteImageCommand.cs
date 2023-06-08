@@ -2,6 +2,7 @@
 using Application.UseCases.Commands;
 using Application.UseCases.Commands.Images;
 using DataAccess;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,11 @@ namespace Implementation.UseCases.Commands.EF.Images
             }
 
             if (image == null)
+            {
+                throw new NotFoundException("Image", request);
+            }
+
+            if (image.Active == false)
             {
                 throw new NotFoundException("Image", request);
             }

@@ -46,6 +46,7 @@ namespace Implementation.UseCases.Queries.EF
 
            var data = postsQuery.GetPagedResponse<Post, PostListDto>(request, x => new PostListDto
             {
+                Id = x.Id,
                 Title = x.Title,
                 Content = x.Content,
                 Author = x.Author.FirstName + ' ' + x.Author.LastName,

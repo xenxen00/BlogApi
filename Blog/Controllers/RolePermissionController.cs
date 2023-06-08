@@ -53,7 +53,7 @@ namespace Api.Controllers
             try
             {
                 _handler.HandleCommand(_deleteRolePermission, dto);
-                return StatusCode(StatusCodes.Status201Created);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (NotFoundException ex)
             {

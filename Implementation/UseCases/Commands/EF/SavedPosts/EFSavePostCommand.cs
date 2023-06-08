@@ -19,9 +19,9 @@ namespace Implementation.UseCases.Commands.EF.SavedPosts
 
         public int Id => 32;
 
-        public string Name => "";
+        public string Name => "Saves a post to a reading list";
 
-        public string Description => "";
+        public string Description => "Adds a post to reading list using EF";
 
         public void Execute(SavedPostDto request)
         {
@@ -35,11 +35,22 @@ namespace Implementation.UseCases.Commands.EF.SavedPosts
                 throw new NotFoundException("User", request.UserId);
             }
 
-            SavedPost savedPost = new SavedPost
+            var existingSavedPost = Context.SavedPosts.Where(x => x.UserId == request.UserId && x.PostId == request.PostId).FirstOrDefault();
+
+            if (existingSavedPost != null)
             {
-                PostId = request.PostId,
-                UserId = request.UserId
-            };
+                existingSavedPost.Active = true;
+            }
+            else
+            {
+                var savedPost = new SavedPost
+                {
+                    PostId = request.PostId,
+                    UserId = request.UserId
+                };
+
+                Context.SavedPosts.Add(savedPost);
+            }
 
             Context.SaveChanges();
         }

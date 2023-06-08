@@ -70,7 +70,7 @@ namespace Api.Controllers
 
 
         // DELETE api/<ReadingListController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize]
         public IActionResult Delete([FromBody] SavedPostDto dto)
         {

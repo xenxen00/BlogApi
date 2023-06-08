@@ -98,7 +98,7 @@ namespace Api.Controllers
             try
             {
                 _handler.HandleCommand(_deletePermissionCommand, id);
-                return StatusCode(StatusCodes.Status201Created);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (NotFoundException ex)
             {

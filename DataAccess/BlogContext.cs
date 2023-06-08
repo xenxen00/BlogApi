@@ -45,12 +45,16 @@ namespace DataAccess
                             entity.CreatedAt = DateTime.UtcNow;
                             break;
                         case EntityState.Modified:
-                            entity.UpdatedAt = DateTime.UtcNow;
-                            entity.UpdatedBy = userIdentity;
-                            break;
-                        case EntityState.Deleted:
-                            entity.DeletedAt = DateTime.UtcNow;
-                            entity.DeletedBy = userIdentity;
+                            if(entity.Active == false)
+                            {
+                                entity.DeletedAt = DateTime.UtcNow;
+                                entity.DeletedBy = userIdentity;
+                            }
+                            else
+                            {
+                                entity.UpdatedAt = DateTime.UtcNow;
+                                entity.UpdatedBy = userIdentity;
+                            }
                             break;
                     }
                 }

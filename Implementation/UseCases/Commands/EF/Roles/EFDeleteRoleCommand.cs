@@ -2,6 +2,7 @@
 using Application.UseCases.Commands.Roles;
 using Application.UseCases.DTO;
 using DataAccess;
+using Domain.Entities;
 
 namespace Implementation.UseCases.Commands.EF.Roles
 {
@@ -22,6 +23,11 @@ namespace Implementation.UseCases.Commands.EF.Roles
             var role = Context.Roles.Where(x => x.Id == request).FirstOrDefault();
 
             if (role == null)
+            {
+                throw new NotFoundException("Role", request);
+            }
+
+            if (role.Active == false)
             {
                 throw new NotFoundException("Role", request);
             }

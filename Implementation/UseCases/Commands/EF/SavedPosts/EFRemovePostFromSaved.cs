@@ -32,8 +32,7 @@ namespace Implementation.UseCases.Commands.EF.SavedPosts
                 throw new NotFoundException("Saved post", request.PostId);
             }
 
-            Context.SavedPosts.Remove(savedPost);
-
+            savedPost.Active = false;
             Context.SaveChanges();
         }
     }
