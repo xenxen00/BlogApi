@@ -13,7 +13,7 @@ namespace Application.UseCases.DTO
         public string Content { get; set; }
         public int AuthorId { get; set; }
         public int CategoryId { get; set; }
-        public IEnumerable<Tag> Tags { get; set; }
+        public IEnumerable<TagDto> Tags { get; set; }
         public IEnumerable<ImageDto> Images { get; set; }
     }
 
@@ -30,6 +30,11 @@ namespace Application.UseCases.DTO
     public class UpdatePostDto: BasePostDto
     {
         public int Id { get; set; }
+    }
+
+    public class TagDto
+    {
+        public string Name { get; set; }
     }
 
 

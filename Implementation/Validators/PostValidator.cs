@@ -15,18 +15,18 @@ namespace Implementation.Validators
         public PostValidator(BlogContext context)
         {
             RuleFor(x => x.Content).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Content is required");
+                .NotEmpty().WithMessage("Content is required");
 
             RuleFor(x => x.Title).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Title is required");
+                .NotEmpty().WithMessage("Title is required");
 
             RuleFor(x => x.AuthorId).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Author is required")
+                .NotEmpty().WithMessage("Author is required")
                 .Must(x => context.Users.Any(y => y.Id == x))
                 .WithMessage("Invalid author id");
 
             RuleFor(x => x.CategoryId).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Category is required")
+                .NotEmpty().WithMessage("Category is required")
                 .Must(x => context.Categories.Any(y => y.Id == x))
                 .WithMessage("Invalid category id");
         }
@@ -38,23 +38,23 @@ namespace Implementation.Validators
         public UpdatePostValidator(BlogContext context) 
         {
             RuleFor(x => x.Id).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Post id is required")
+                .NotEmpty().WithMessage("Post id is required")
                 .Must(x => context.Posts.Any(y => y.Id == x))
                 .WithMessage("Invalid post id");
 
             RuleFor(x => x.Content).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Content is required");
+                .NotEmpty().WithMessage("Content is required");
 
             RuleFor(x => x.Title).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Title is required");
+                .NotEmpty().WithMessage("Title is required");
 
             RuleFor(x => x.AuthorId).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Author is required")
+                .NotEmpty().WithMessage("Author is required")
                 .Must(x => context.Users.Any(y => y.Id == x))
                 .WithMessage("Invalid author id");
 
             RuleFor(x => x.CategoryId).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Category is required")
+                .NotEmpty().WithMessage("Category is required")
                 .Must(x => context.Categories.Any(y => y.Id == x))
                 .WithMessage("Invalid category id");
         }
@@ -65,7 +65,7 @@ namespace Implementation.Validators
         public ImageValdiator(BlogContext context)
         {
             RuleFor(x => x.Path).Cascade(CascadeMode.Stop)
-                .Empty().WithMessage("Image Path is required")
+                .NotEmpty().WithMessage("Image Path is required")
                 .Must(x => !context.Images.Any(y => y.Path == x))
                 .WithMessage("Image path {PropertyValue} already exists.");
 

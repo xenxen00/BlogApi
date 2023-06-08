@@ -1,16 +1,20 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DataAccess
 {
     public class BlogContext : DbContext
     {
+        private readonly IHttpContextAccessor _context;
 
-        //public BlogContext(DbContextOptions options) : base(options)
-        //{
-        //    Database.EnsureCreated();
-        //}
+        public BlogContext(DbContextOptions options, IHttpContextAccessor context) : base(options)
+        {
+            Database.EnsureCreated();
+            _context = context;
+        }
 
         protected IApplicationUser User { get; }
 
@@ -28,7 +32,9 @@ namespace DataAccess
 
         public override int SaveChanges()
         {
-            foreach(var entry in this.ChangeTracker.Entries())
+            var userIdentity = _context.HttpContext.User.FindFirst("Email").Value;
+
+            foreach (var entry in this.ChangeTracker.Entries())
             {
                 if(entry.Entity is Entity entity)
                 {
@@ -40,7 +46,11 @@ namespace DataAccess
                             break;
                         case EntityState.Modified:
                             entity.UpdatedAt = DateTime.UtcNow;
-                            entity.UpdatedBy = User.Identity;
+                            entity.UpdatedBy = userIdentity;
+                            break;
+                        case EntityState.Deleted:
+                            entity.DeletedAt = DateTime.UtcNow;
+                            entity.DeletedBy = userIdentity;
                             break;
                     }
                 }
@@ -49,11 +59,11 @@ namespace DataAccess
             return base.SaveChanges();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-27P65MU\\sqlexpress;Initial Catalog=Blog;Integrated Security=True");
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Data Source=DESKTOP-27P65MU\\sqlexpress;Initial Catalog=Blog;Integrated Security=True");
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         public DbSet<Post>  Posts {get; set;}
         public DbSet<Tag> Tags { get; set; }

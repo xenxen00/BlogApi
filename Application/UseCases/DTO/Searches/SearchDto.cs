@@ -8,6 +8,6 @@ namespace Application.UseCases.DTO.Searches
 {
     public class SearchDto: PagedSearch
     {
-        public string keyword { get; set; }
+        public string? keyword { get; set; }
     }
 }

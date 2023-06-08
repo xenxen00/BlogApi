@@ -157,7 +157,6 @@ namespace Api.Extensions
             services.AddTransient<IApplicationUser>(x =>
             {
                 var accessor = x.GetService<IHttpContextAccessor>();
-                var header = accessor.HttpContext.Request.Headers["Authorization"];
 
                 //Pristup payload-u
                 var claims = accessor.HttpContext.User;
@@ -191,7 +190,7 @@ namespace Api.Extensions
 
                 var options = optionsBuilder.Options;
 
-                return new BlogContext();
+                return new BlogContext(options, x.GetService<IHttpContextAccessor>());
             });
             
         }

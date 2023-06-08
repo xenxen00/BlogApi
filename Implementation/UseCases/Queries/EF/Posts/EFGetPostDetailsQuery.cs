@@ -1,4 +1,5 @@
-﻿using Application.UseCases.DTO;
+﻿using Application.Exeptions;
+using Application.UseCases.DTO;
 using Application.UseCases.Queries;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
@@ -26,10 +27,16 @@ namespace Implementation.UseCases.Queries.EF.Posts
         {
             var post = Context.Posts.Include(x => x.PostReactions).ThenInclude(x => x.Reaction)
                                           .Include(x => x.Comments).ThenInclude(x => x.Author)
-                                          .Include(x => x.Author)
+                                          .Include(x => x.Author).Include(x => x.Category)
                                           .Include(x => x.PostTags).ThenInclude(x => x.Tag)
-                                          .Where(x => x.Id == request && x.Active == true).FirstOrDefault();
-            return new PostDto
+                                          .Where(x =>x.Id == request && x.Active == true).FirstOrDefault();
+
+            if(post == null)
+            {
+                throw new NotFoundException("Post", request);
+            }
+
+            var data = new PostDto
             {
                 Title = post.Title,
                 Content = post.Content,
@@ -39,9 +46,9 @@ namespace Implementation.UseCases.Queries.EF.Posts
                 LastEditedAt = post.UpdatedAt,
                 Comments = post.Comments.Select(x => new Comment
                 {
-                    Content = post.Content,
-                    CommentedAt = post.CreatedAt,
-                    PostedBy = post.Author.FirstName + ' ' + post.Author.LastName
+                    Content = x.Content,
+                    CommentedAt = x.CreatedAt,
+                    PostedBy = x.Author.FirstName + ' ' + x.Author.LastName
                 }),
                 Tags = post.PostTags.Select(x => x.Tag.Name).ToArray(),
                 PostReactions = new PostReaction
@@ -54,6 +61,8 @@ namespace Implementation.UseCases.Queries.EF.Posts
                     })
                 }
             };
+
+            return data;
         }
     }
 }

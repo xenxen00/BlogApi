@@ -46,13 +46,18 @@ namespace Implementation.UseCases.Commands.EF.Posts
 
                 if (tagExists == null)
                 {
-                    Context.Tags.Add(new Tag
+                    var newTag = new Tag
                     {
                         Name = tag.Name
-                    });
+                    };
+                    Context.Tags.Add(newTag);
+                    tags.Add(newTag);
+                }
+                else
+                {
+                    tags.Add(tagExists);
                 }
 
-                tags.Add(tag);
             }
 
             var post = new Post
